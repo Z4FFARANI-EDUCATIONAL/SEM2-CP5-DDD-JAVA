@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Usuário</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Biblioteca Comunitária</h1>
+    <nav>
+        <a href="/livros">Livros</a>
+        <a href="/usuarios">Usuários</a>
+        <a href="/emprestimos">Empréstimos</a>
+    </nav>
+</header>
+<div class="container">
+<h2>Cadastrar Usuário</h2>
+<div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
+<form th:action="@{/usuarios/cadastrar}" th:object="${usuario}" method="post">
+    <label>Nome:</label>
+    <input type="text" th:field="*{nome}">
+    <div th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}" class="error"></div>
+
+    <label>Email:</label>
+    <input type="email" th:field="*{email}">
+    <div th:if="${#fields.hasErrors('email')}" class="error" th:errors="*{email}"></div>
+
+    <button type="submit">Salvar</button>
+</form>
+</div>
+</body>
+</html>

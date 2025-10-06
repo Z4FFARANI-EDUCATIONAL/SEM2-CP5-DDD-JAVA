@@ -1,57 +1,86 @@
 package com.fiap.cp5.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-
 import org.springframework.ui.Model;
-
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import com.fiap.cp5.model.Livro;
 import com.fiap.cp5.service.LivroService;
-
-// Responsável pelas requisições HTTP (GET, POST, PUT, DELETE)
-// Porta de entrada da aplicação
-// Interage com a camada Service para buscar / tratar dados e Retorna a resposta (página tymeleaf ou Json em API)
 
 @Controller
 @RequestMapping("/livros")
 public class LivroController {
-    private final LivroService service;
 
-    public LivroController(LivroService service) {
-        this.service = service;
+    private final LivroService livroService;
+
+    public LivroController(LivroService livroService) {
+        this.livroService = livroService;
     }
 
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("listaLivros", service.listarTodos());
-        return "livros";
+        model.addAttribute("livros", livroService.listarTodos());
+        return "livros/listar";
     }
 
-    @GetMapping("/novo")
-    public String novoLivroForm(Model model) {
+    @GetMapping("/disponiveis")
+    public String listarDisponiveis(Model model) {
+        model.addAttribute("livros", livroService.listarDisponiveis());
+        return "livros/listar";
+    }
+
+    @GetMapping("/cadastrar")
+    public String cadastrar(Model model) {
         model.addAttribute("livro", new Livro());
-        return "form";
+        return "livros/cadastrar";
     }
 
-    @PostMapping
-    public String salvar(@ModelAttribute Livro livro) {
-        service.salvar(livro);
+    @PostMapping("/cadastrar")
+    public String salvar(@Valid Livro livro, BindingResult result) {
+        if (result.hasErrors()) return "livros/cadastrar";
+
+        try {
+            livroService.inserir(livro);
+        } catch (IllegalArgumentException e) {
+            result.rejectValue("titulo", "error.livro", e.getMessage());
+            return "livros/cadastrar";
+        }
+
         return "redirect:/livros";
     }
 
     @GetMapping("/editar/{id}")
-    public String editarProduto(@PathVariable Long id, Model model) {
-        model.addAttribute("livro", service.buscarPorId(id));
-        return "form";
+    public String editar(@PathVariable Long id, Model model) {
+        Livro livro = livroService.buscarPorId(id);
+        if (livro == null) {
+            return "redirect:/livros";
+        }
+        model.addAttribute("livro", livro);
+        return "livros/editar";
     }
 
-    @GetMapping("/deletar/{id}")
-    public String deletar(@PathVariable Long id) {
-        service.deletar(id);
-        return "redirect:/livros";
+    @PostMapping("/editar/{id}")
+    public String atualizar(@PathVariable Long id, @Valid Livro livro, Model model) {
+        try {
+            livroService.editar(id, livro);
+            return "redirect:/livros";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("livros", livroService.listarTodos());
+            return "livros/editar";
+        }
+    }
+
+    @PostMapping("/deletar/{id}")
+    public String deletar(@PathVariable Long id, Model model) {
+        try {
+            livroService.excluir(id);
+            return "redirect:/livros";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("livros", livroService.listarTodos());
+            return "livros/listar";
+        }
     }
 }

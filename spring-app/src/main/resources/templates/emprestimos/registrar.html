@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Empréstimo</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Biblioteca Comunitária</h1>
+    <nav>
+        <a href="/livros">Livros</a>
+        <a href="/usuarios">Usuários</a>
+        <a href="/emprestimos">Empréstimos</a>
+    </nav>
+</header>
+<div class="container">
+    <h2>Registrar Empréstimo</h2>
+
+    <div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
+
+    <form th:action="@{/emprestimos/registrar}" th:object="${emprestimo}" method="post">
+
+        <label for="livro">Livro:</label>
+        <select th:field="*{livro}" id="livro" required>
+            <option th:each="livro : ${livros}" th:value="${livro.id}" th:text="${livro.titulo}"></option>
+        </select>
+
+        <label for="usuario">Usuário:</label>
+        <select th:field="*{usuario}" id="usuario" required>
+            <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="${usuario.nome}"></option>
+        </select>
+
+        <label for="dataRetirada">Data de Retirada:</label>
+        <input type="date" th:field="*{dataRetirada}" id="dataRetirada" required>
+        <div th:if="${#fields.hasErrors('dataRetirada')}" th:errors="*{dataRetirada}" class="error"></div>
+
+        <label for="dataDevolucao">Data de Devolução:</label>
+        <input type="date" th:field="*{dataDevolucao}" id="dataDevolucao" required>
+        <div th:if="${#fields.hasErrors('dataDevolucao')}" th:errors="*{dataDevolucao}" class="error"></div>
+
+        <button type="submit">Registrar</button>
+    </form>
+</div>
+</body>
+</html>

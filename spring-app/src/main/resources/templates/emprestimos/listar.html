@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Empréstimos</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Biblioteca Comunitária</h1>
+    <nav>
+        <a href="/livros">Livros</a>
+        <a href="/usuarios">Usuários</a>
+        <a href="/emprestimos">Empréstimos</a>
+    </nav>
+</header>
+<div class="container">
+<h2>Lista de Empréstimos</h2>
+<div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
+<a class="button" href="/emprestimos/registrar">Novo Empréstimo</a>
+<table>
+    <tr>
+        <th>ID</th><th>Livro</th><th>Usuário</th><th>Data Retirada</th><th>Data Devolução</th><th>Ações</th>
+    </tr>
+    <tr th:each="emp : ${emprestimos}">
+        <td th:text="${emp.id}"></td>
+        <td th:text="${emp.livro.titulo}"></td>
+        <td th:text="${emp.usuario.nome}"></td>
+        <td th:text="${emp.dataRetirada}"></td>
+        <td th:text="${emp.dataDevolucao}"></td>
+
+        <td>
+            <form th:action="@{/emprestimos/devolver/{id}(id=${emp.id})}" method="post" style="display:inline;">
+                <button type="submit" class="button">Devolver</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</div>
+</body>
+</html>

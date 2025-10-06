@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastrar Livro</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Biblioteca Comunitária</h1>
+    <nav>
+        <a href="/livros">Livros</a>
+        <a href="/usuarios">Usuários</a>
+        <a href="/emprestimos">Empréstimos</a>
+    </nav>
+</header>
+<div class="container">
+    <h2>Cadastrar Livro</h2>
+    
+    <form th:action="@{/livros/cadastrar}" th:object="${livro}" method="post">
+        <div th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}" class="error"></div>
+        
+        <label for="titulo">Título:</label>
+        <input type="text" th:field="*{titulo}" id="titulo" required>
+
+        <label for="autor">Autor:</label>
+        <input type="text" th:field="*{autor}" id="autor" required>
+        <div th:if="${#fields.hasErrors('autor')}" th:errors="*{autor}" class="error"></div>
+
+        <label for="anoPublicacao">Ano de Publicação:</label>
+        <input type="number" th:field="*{anoPublicacao}" id="anoPublicacao" required>
+        <div th:if="${#fields.hasErrors('anoPublicacao')}" th:errors="*{anoPublicacao}" class="error"></div>
+
+        <button type="submit">Salvar</button>
+    </form>
+</div>
+</body>
+</html>

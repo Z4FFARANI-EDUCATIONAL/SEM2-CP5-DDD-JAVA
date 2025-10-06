@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Livros</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Biblioteca Comunitária</h1>
+    <nav>
+        <a href="/livros">Livros</a>
+        <a href="/usuarios">Usuários</a>
+        <a href="/emprestimos">Empréstimos</a>
+    </nav>
+</header>
+<div class="container">
+    <h2>Lista de Livros</h2>
+
+    <a class="button" href="/livros/cadastrar">Cadastrar novo livro</a>
+    
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Ano</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="livro : ${livros}">
+                <td th:text="${livro.id}"></td>
+                <td th:text="${livro.titulo}"></td>
+                <td th:text="${livro.autor}"></td>
+                <td th:text="${livro.anoPublicacao}"></td>
+                <td th:text="${livro.status}"></td>
+                <td>
+                    <a class="button" th:href="@{/livros/editar/{id}(id=${livro.id})}">Editar</a>
+
+                    <form th:action="@{/livros/deletar/{id}(id=${livro.id})}" method="post" style="display:inline;" th:onsubmit="return confirm('Tem certeza que deseja excluir o livro?');">
+                        <button type="submit">Excluir</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

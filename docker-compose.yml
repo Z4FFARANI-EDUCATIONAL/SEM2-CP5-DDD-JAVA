@@ -1,37 +1,31 @@
 version: '3.8'
 services:
-  mysql:
+  db:
     image: mysql:8
-    container_name: mysql-biblioteca
-    restart: always
+    container_name: library-db
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: Biblioteca
-      MYSQL_USER: admin
+      MYSQL_DATABASE: library
+      MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
     volumes:
-      - ./mysql_data:/var/lib/mysql
-      - ./docker/mysql-init:/docker-entrypoint-initdb.d
-
-  adminer:
-    image: adminer
-    container_name: adminer-biblioteca
-    restart: always
-    ports:
-      - "8081:8080"
+      - db_data:/var/lib/mysql
 
   app:
-    build: ./spring-app
-    container_name: spring-app
+    container_name: library-app
+    build:
+      context: ./spring-app
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    depends_on:
-      - mysql
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Biblioteca
-      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/library?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: password
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQLDialect
+    depends_on:
+      - db
+
+volumes:
+  db_data:

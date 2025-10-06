@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Livro</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header>
+    <h1>Biblioteca Comunitária</h1>
+    <nav>
+        <a href="/livros">Livros</a>
+        <a href="/usuarios">Usuários</a>
+        <a href="/emprestimos">Empréstimos</a>
+    </nav>
+</header>
+<div class="container">
+<h2>Editar Livro</h2>
+<div th:if="${errorMessage}" class="error" th:text="${errorMessage}"></div>
+<form th:action="@{/livros/editar/{id}(id=${livro.id})}" th:object="${livro}" method="post">
+    <label>Título:</label>
+    <input type="text" th:field="*{titulo}">
+    <div th:if="${#fields.hasErrors('titulo')}" class="error" th:errors="*{titulo}"></div>
+
+    <label>Autor:</label>
+    <input type="text" th:field="*{autor}">
+
+    <label>Ano de Publicação:</label>
+    <input type="number" th:field="*{anoPublicacao}">
+
+    <label>Status:</label>
+    <select th:field="*{status}">
+        <option value="Disponível">Disponível</option>
+        <option value="Emprestado">Emprestado</option>
+    </select>
+
+    <button type="submit">Atualizar</button>
+</form>
+</div>
+</body>
+</html>
