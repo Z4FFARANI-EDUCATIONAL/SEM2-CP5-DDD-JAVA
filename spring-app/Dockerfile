@@ -1,9 +1,5 @@
-FROM maven:3.9.4-eclipse-temurin-17 AS build
+FROM maven:3.9.4-eclipse-temurin-17
 WORKDIR /app
-
-COPY pom.xml .
 COPY . .
-
-RUN mvn clean package -DskipTests
-
 EXPOSE 8080
+CMD ["mvn", "spring-boot:run"]
