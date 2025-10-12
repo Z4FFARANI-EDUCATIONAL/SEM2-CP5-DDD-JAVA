@@ -49,7 +49,7 @@ cd SEM2-CP5-DDD-JAVA
 
 3. No terminal, construir toda a aplicação em contêineres:
 ```bash
-docker compose build
+docker compose up
 ```
 
 4. Abrir no navegador:
