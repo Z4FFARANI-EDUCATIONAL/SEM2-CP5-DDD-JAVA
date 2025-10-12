@@ -1,56 +1,25 @@
-# Biblioteca Comunitária
-#### Kaique Zaffarani | 556677
+![banner](./banner.png)
 
-## Descrição
+# PROJETO
+Projeto de sistema de biblioteca comunitária desenvolvido com Spring Boot, MySQL e Thymeleaf.
+O sistema permite gerenciar livros, usuários e empréstimos, incluindo cadastro, edição, listagem e devolução de livros.
 
-Projeto de sistema de biblioteca comunitária desenvolvido com **Spring Boot**, **MySQL** e **Thymeleaf**.
-O sistema permite gerenciar **livros**, **usuários** e **empréstimos**, incluindo cadastro, edição, listagem e devolução de livros.
+Fluxo do sistema:
 
----
+- **Controller** | Recebe requisições HTTP e envia para o service.
+- **Service** | Processa regras de negócio, valida dados e chama o repository.
+- **Repository** | Realiza operações no banco de dados (CRUD).
+- **Thymeleaf** | Renderiza páginas HTML dinâmicas com os dados retornados.
 
-## Tecnologias Utilizadas
+<br>
 
-* **Spring Boot**: framework Java para desenvolvimento de aplicações web.
-* **Spring Data JPA**: integração com banco de dados relacional.
-* **MySQL**: banco de dados para persistência de dados.
-* **Thymeleaf**: engine de templates para renderizar HTML dinamicamente.
-* **Jakarta Validation**: validação de campos em formulários.
-* **Maven**: gerenciamento de dependências do projeto.
-
----
-
-## Funcionalidades
-
-### Livros
-
-* Listar todos os livros
-* Listar livros disponíveis
-* Cadastrar, editar e excluir livros
-* Gerenciar status: Disponível / Emprestado
-
-### Usuários
-
-* Listar todos os usuários
-* Cadastrar, editar e excluir usuários
-* Validação de nome e email
-
-### Empréstimos
-
-* Registrar novo empréstimo
-* Validar datas e disponibilidade de livros
-* Listar todos os empréstimos
-* Devolver livros e atualizar status automaticamente
-
----
-
-## Estrutura do Projeto
-
+# ESTRUTURA
 ```
 src/main/java/com/fiap/cp5/
 ├── controller
 │   ├── LivroController.java       <!-- Controla requisições de livros -->
-│   ├── UsuarioController.java    <!-- Controla requisições de usuários -->
-│   └── EmprestimoController.java <!-- Controla requisições de empréstimos -->
+│   ├── UsuarioController.java     <!-- Controla requisições de usuários -->
+│   └── EmprestimoController.java  <!-- Controla requisições de empréstimos -->
 ├── model
 │   ├── Livro.java
 │   ├── Usuario.java
@@ -65,18 +34,30 @@ src/main/java/com/fiap/cp5/
     └── EmprestimoService.java     <!-- Contém regras de negócio de empréstimos -->
 ```
 
----
+<br>
 
-## Configuração do Banco de Dados
+# INSTRUÇÕES
+1. Em um terminal, clonar o repositório:
+```bash
+git clone https://github.com/Z4FFARANI-EDUCATIONAL/SEM2-CP5-DDD-JAVA
+```
 
-1. Criar banco de dados no MySQL:
+2. No terminal, navegar até a pasta do projeto:
+```bash
+cd SEM2-CP5-DDD-JAVA
+```
 
+3. No terminal, construir toda a aplicação em contêineres, caso utilize Docker:
+```bash
+docker compose build
+```
+
+4. Criar banco de dados no MySQL:
 ```sql
 CREATE DATABASE biblioteca;
 ```
 
-2. Configurar o `application.properties`:
-
+5. Configurar o `application.properties`:
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/biblioteca?useSSL=false&serverTimezone=UTC
 spring.datasource.username=root
@@ -86,55 +67,54 @@ spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 ```
 
----
-
-## Como Executar
-
-1. Clonar o repositório:
-
-```bash
-git clone <URL_DO_REPOSITORIO>
-```
-
-2. Entrar na pasta do projeto:
-
-```bash
-cd spring-app
-```
-
-3. Executar o projeto:
-
+6. Executar o projeto:
 ```bash
 mvn spring-boot:run
 ```
 
-4. Abrir no navegador:
-
+7. Abrir no navegador:
 ```
 http://localhost:8080
 ```
 
----
+<br>
 
-## Fluxo do Sistema
+# FUNÇÕES
+`Livro.java` | `LivroRepository.java` | `LivroService.java` | `LivroController.java`:
+- Criar modelo de livro.
+- Persistir o modelo para o banco de dados em padrão DAO (Data Access Object).
+- Listar todos os livros.
+- Listar livros disponíveis.
+- Gerenciar status para disponível ou emprestado.
+- Cadastrar, editar, ou excluir livros.
 
-1. **Controller**: recebe requisições HTTP e envia para o Service.
-2. **Service**: processa regras de negócio, valida dados e chama o Repository.
-3. **Repository**: realiza operações no banco de dados (CRUD).
-4. **Thymeleaf**: renderiza páginas HTML dinâmicas com os dados retornados.
+`Usuario.java` | `UsuarioRepository.java` | `UsuarioService.java` | `UsuarioController.java`:
+- Criar modelo de usuário.
+- Persistir o modelo para o banco de dados em padrão DAO.
+- Listar todos os usuários.
+- Validação de nome e email.
+- Cadastrar, editar, ou excluir usuários.
 
----
+`Emprestimo.java` | `EmprestimoRepository.java` | `EmprestimoService.java` | `EmprestimoController.java`:
+- Criar modelo de empréstimo.
+- Persistir o modelo para o banco de dados em padrão DAO.
+- Listar todos os empréstimos.
+- Registrar novo empréstimo.
+- Validar datas e disponibilidade de livros.
+- Devolver livros, ou atualizar status automaticamente.
 
-## Observações
+<br>
 
-* O status dos livros é atualizado automaticamente ao registrar ou devolver um empréstimo.
-* Formulários possuem validação de campos obrigatórios e email.
-* Mensagens de erro do Service são exibidas nas páginas Thymeleaf.
+# OBSERVAÇÕES
+- O status dos livros é atualizado automaticamente ao registrar ou devolver um empréstimo.
+- Formulários possuem validação de campos obrigatórios e e-mail.
+- Mensagens de erro do service são exibidas nas páginas Thymeleaf.
 
----
+<br>
 
-## Sugestões de Extensão
-
-* Implementar paginação e filtros na listagem de livros e usuários.
-* Adicionar autenticação de usuários e permissões.
-* Relatórios de empréstimos atrasados e histórico de usuários.
+# TECNOLOGIAS
+**[![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)](https://www.oracle.com/br/java/technologies/downloads)**
+**[![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)](https://start.spring.io)**
+**[![Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)](https://maven.apache.org/download.cgi)**
+**[![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/downloads)**
+**[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/products/docker-desktop)**
