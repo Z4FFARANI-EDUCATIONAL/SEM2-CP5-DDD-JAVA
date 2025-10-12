@@ -47,32 +47,12 @@ git clone https://github.com/Z4FFARANI-EDUCATIONAL/SEM2-CP5-DDD-JAVA
 cd SEM2-CP5-DDD-JAVA
 ```
 
-3. No terminal, construir toda a aplicação em contêineres, caso utilize Docker:
+3. No terminal, construir toda a aplicação em contêineres:
 ```bash
 docker compose build
 ```
 
-4. Criar banco de dados no MySQL:
-```sql
-CREATE DATABASE biblioteca;
-```
-
-5. Configurar o `application.properties`:
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/biblioteca?useSSL=false&serverTimezone=UTC
-spring.datasource.username=root
-spring.datasource.password=senha
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
-```
-
-6. Executar o projeto:
-```bash
-mvn spring-boot:run
-```
-
-7. Abrir no navegador:
+4. Abrir no navegador:
 ```
 http://localhost:8080
 ```
