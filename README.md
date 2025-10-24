@@ -1,4 +1,4 @@
-![banner](../SEM2-CP5-DDD-JAVA/banner.png)
+![banner](./banner.png)
 
 # PROJETO
 Projeto de sistema de biblioteca comunitária desenvolvido com Spring Boot, MySQL e Thymeleaf.
